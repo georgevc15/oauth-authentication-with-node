@@ -4,11 +4,24 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var passport = require('passport');
+var session = require('express-session');
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
 
 var app = express();
+var GoogleStrategy = require('passport-google-oauth20').Strategy;
+
+passport.use(new GoogleStrategy({
+        clientID: '378340219192-rhljo81k7h3nctse8rk1eb1l2vaur2c5.apps.googleusercontent.com',
+        clientSecret: 'zRn9w5c6z5SSOMjqO0iRxAQR',
+        callbackURL: 'http://localhost:3000/auth/google/callback',
+    },
+    function(req, accessToken, refreshToken, profile, cb, done) {
+          done(null, profile);
+    } 
+));
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -21,6 +34,25 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+app.use(session({
+    secret: 'oathlog',
+    resave: false,
+    saveUninitialized: false,
+    cookie: {  }
+}));
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+passport.serializeUser(function(user, done) {
+  done(null, user);
+});
+
+
+passport.deserializeUser(function(user, done) {
+  done(null, user);
+});
 
 app.use('/', routes);
 app.use('/users', users);
