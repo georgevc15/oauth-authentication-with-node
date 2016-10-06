@@ -6,9 +6,11 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var passport = require('passport');
 var session = require('express-session');
+var morgan = require('morgan')
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
+var auth = require('./routes/auth');
 
 var app = express();
 var GoogleStrategy = require('passport-google-oauth20').Strategy;
@@ -18,9 +20,9 @@ passport.use(new GoogleStrategy({
         clientSecret: 'zRn9w5c6z5SSOMjqO0iRxAQR',
         callbackURL: 'http://localhost:3000/auth/google/callback',
     },
-    function(req, accessToken, refreshToken, profile, cb, done) {
-          done(null, profile);
-    } 
+  function(accessToken, refreshToken, profile, cb) {
+    return cb(null, profile);
+  }
 ));
 
 // view engine setup
@@ -30,32 +32,35 @@ app.set('view engine', 'ejs');
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
+app.use(require('morgan')('combined'));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(session({
     secret: 'oathlog',
-    resave: false,
-    saveUninitialized: false,
-    cookie: {  }
+    resave: true,
+    saveUninitialized: true
 }));
 
 app.use(passport.initialize());
 app.use(passport.session());
 
-passport.serializeUser(function(user, done) {
-  done(null, user);
+passport.serializeUser(function(user, cb) {
+  cb(null, user);
 });
 
 
-passport.deserializeUser(function(user, done) {
-  done(null, user);
+passport.deserializeUser(function(obj, cb) {
+   cb(null, obj);
 });
 
 app.use('/', routes);
 app.use('/users', users);
+app.use('/auth', auth);
+
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -65,28 +70,5 @@ app.use(function(req, res, next) {
 });
 
 // error handlers
-
-// development error handler
-// will print stacktrace
-if (app.get('env') === 'development') {
-  app.use(function(err, req, res, next) {
-    res.status(err.status || 500);
-    res.render('error', {
-      message: err.message,
-      error: err
-    });
-  });
-}
-
-// production error handler
-// no stacktraces leaked to user
-app.use(function(err, req, res, next) {
-  res.status(err.status || 500);
-  res.render('error', {
-    message: err.message,
-    error: {}
-  });
-});
-
 
 module.exports = app;
