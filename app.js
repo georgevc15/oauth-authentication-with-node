@@ -13,17 +13,6 @@ var users = require('./routes/users');
 var auth = require('./routes/auth');
 
 var app = express();
-var GoogleStrategy = require('passport-google-oauth20').Strategy;
-
-passport.use(new GoogleStrategy({
-        clientID: '378340219192-rhljo81k7h3nctse8rk1eb1l2vaur2c5.apps.googleusercontent.com',
-        clientSecret: 'zRn9w5c6z5SSOMjqO0iRxAQR',
-        callbackURL: 'http://localhost:3000/auth/google/callback',
-    },
-  function(accessToken, refreshToken, profile, cb) {
-    return cb(null, profile);
-  }
-));
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -44,17 +33,8 @@ app.use(session({
     saveUninitialized: true
 }));
 
-app.use(passport.initialize());
-app.use(passport.session());
 
-passport.serializeUser(function(user, cb) {
-  cb(null, user);
-});
-
-
-passport.deserializeUser(function(obj, cb) {
-   cb(null, obj);
-});
+require('./config/passport')(app);
 
 app.use('/', routes);
 app.use('/users', users);
