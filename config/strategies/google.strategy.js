@@ -9,7 +9,17 @@ module.exports = function(){
 		        callbackURL: 'http://localhost:3000/auth/google/callback',
 		    },
 		  function(accessToken, refreshToken, profile, cb) {
-		    return cb(null, profile);
+		    var user = {}; //create a user object
+
+			user.email = profile.emails[0].value;
+			user.image = profile._json.image.url;
+			user.displayName = profile.displayName;
+
+			user.google = {}; //create a google user object
+			user.google.id = profile.id;
+			user.google.token = accessToken;
+
+		    return cb(null, user);
 		  }
 		));
 
