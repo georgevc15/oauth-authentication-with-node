@@ -8,6 +8,7 @@ module.exports = function(app) {
 
 		passport.serializeUser(function(user, cb) {
 		  cb(null, user);
+		  console.log(user);
 		});
 
 
@@ -16,5 +17,6 @@ module.exports = function(app) {
 		});
 
 		require('./strategies/google.strategy')();
+		require('./strategies/twitter.strategy')();
 
 };
