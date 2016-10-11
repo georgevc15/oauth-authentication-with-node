@@ -24,5 +24,14 @@ router.route('/twitter/callback')
 		  });
 
 
+router.route('/facebook')
+  .get(passport.authenticate('facebook'));
+
+router.route('/facebook/callback') 
+  .get(passport.authenticate('facebook', { failureRedirect: '/' }),
+  function(req, res) {
+    res.redirect('/users');
+  });
+
 
 module.exports = router;
