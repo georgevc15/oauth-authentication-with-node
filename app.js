@@ -6,13 +6,16 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var passport = require('passport');
 var session = require('express-session');
-var morgan = require('morgan')
+var morgan = require('morgan');
+var mongoose = require('mongoose');
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
 var auth = require('./routes/auth');
 
 var app = express();
+var db = mongoose.connect('mongodb://localhost/loginOauth');
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
