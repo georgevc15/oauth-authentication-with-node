@@ -9,7 +9,11 @@ module.exports = function(){
 		        clientSecret: 'zRn9w5c6z5SSOMjqO0iRxAQR',
 		        callbackURL: 'http://localhost:3000/auth/google/callback',
 		    },
-	function(accessToken, refreshToken, profile, cb) {
+	function(req, accessToken, refreshToken, profile, cb) {
+
+
+
+
 
 		  var user = {}; //create a user object
 		  var query = {

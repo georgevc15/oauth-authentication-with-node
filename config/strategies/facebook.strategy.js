@@ -10,11 +10,36 @@ module.exports = function() {
 		callbackURL : 'http://localhost:3000/auth/facebook/callback',
 		profileFields: ['id', 'displayName', 'photos', 'email']
 	},
-	function(accessToken, refreshToken, profile, cb){
+	function(req, accessToken, refreshToken, profile, cb){
 
-		var user = {} ;
 
-		var user = {}; //create a user object
+		if(req.user){
+			var query = {};
+			if(req.user.google)
+			{
+				console.log('google');
+				var query = {
+					'google.id': req.user.google.id
+				};
+			} else if(req.user.twitter) {
+				var query = {
+					'twitter.id': req.user.twitter.id
+				};
+			}
+
+			User.findOne(query, function (error, user) {
+				if(user) {
+					user.facebook = {}; 
+					user.facebook.id = profile.id;
+					user.facebook.token = accessToken;
+
+				    user.save();
+				     cb(null, user);
+				}
+			});
+		}
+		else { 
+		//var user = {}; //create a user object
 		  var query = {
 		  	'facebook.id': profile.id
 		  };
@@ -33,7 +58,7 @@ module.exports = function() {
 					//user.image = profile._json.image.url;
 					user.displayName = profile.displayName;
 
-					user.facebook = {}; //create a google user object
+					user.facebook = {}; 
 					user.facebook.id = profile.id;
 					user.facebook.token = accessToken;
 
@@ -42,6 +67,6 @@ module.exports = function() {
 
 		 		}
 		  	});	
-
+		  }	
 	}));
 }	

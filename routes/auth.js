@@ -20,6 +20,7 @@ router.route('/twitter')
 router.route('/twitter/callback')
 	.get(passport.authenticate('twitter', { failureRedirect: '/' }),
 		  function(req, res) {
+		    //res.send(req.user);
 		    res.redirect('/users/');
 		  });
 

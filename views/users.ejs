@@ -13,5 +13,26 @@
 		<img src="<%=user.image%>">
 		<%=user.name%>
 	</div>
+	<div>
+		<ul>
+			<li>
+				<a href="/auth/google" class="googleplus"> Google
+					<%if(user.google){%> -> You have google plus sign in <%}%>
+				</a>
+			</li>
+			<li>
+				<a href="/auth/twitter" class="twitter">
+					<i class="fa fa-twitter" aria-hidden="true"></i>Twitter
+					<%if(user.twitter){%> ->  You have twitter sign in <%}%>
+				</a>
+			</li>
+			<li>
+				<a href="/auth/facebook" class="facebook">
+					<i class="fa fa-twitter" aria-hidden="true"></i>Facebook 
+					<%if(user.facebook){%> ->  You have facebook sign in <%}%>
+				</a>
+			</li>
+		</ul>
+	</div>
 	</body>
 </html>
