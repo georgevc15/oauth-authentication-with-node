@@ -13,9 +13,7 @@ module.exports = function() {
 	function(req, token, tokenSecret, profile, cb) {
 		    
 		  //var user = {}; //create a user object
-		  
-		console.log('aici.....');
-		console.log(req.user);
+
 
 		if(req.user){
 			var query = {};
@@ -71,6 +69,6 @@ module.exports = function() {
 	  				}
 		  	});	
 	 	}
-	 }
-  ))
+	
+	 }));
 }

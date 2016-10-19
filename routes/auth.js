@@ -26,7 +26,9 @@ router.route('/twitter/callback')
 
 
 router.route('/facebook')
-  .get(passport.authenticate('facebook'));
+  .get(passport.authenticate('facebook', {
+  		scope: ['email', 'user_friends']
+  }));
 
 router.route('/facebook/callback') 
   .get(passport.authenticate('facebook', { failureRedirect: '/' }),

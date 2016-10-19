@@ -11,7 +11,11 @@
 	<body>
 	<div>
 		<img src="<%=user.image%>">
-		<%=user.name%>
+		<%=user.displayName%>
+		<%if(user.facebook){%>
+			<img src="<%=user.facebook.image%>">
+			Friends count: <%=user.facebook.friends%> 
+		<%}%>
 	</div>
 	<div>
 		<ul>
