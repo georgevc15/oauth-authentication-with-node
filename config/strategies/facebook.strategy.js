@@ -17,7 +17,6 @@ module.exports = function() {
 			var query = {};
 			if(req.user.google)
 			{
-				console.log('google');
 				var query = {
 					'google.id': req.user.google.id
 				};

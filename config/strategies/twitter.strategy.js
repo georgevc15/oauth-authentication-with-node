@@ -19,7 +19,6 @@ module.exports = function() {
 			var query = {};
 			if(req.user.google)
 			{
-				console.log('google');
 				var query = {
 					'google.id': req.user.google.id
 				};
@@ -48,10 +47,10 @@ module.exports = function() {
 
 			 User.findOne(query, function(error, user) {
 		  		if (user) {
-		  			console.log('found');
+		  			console.log('found twitter');
 		  			cb(null, user);
 		  		} else {
-		  			console.log('Not found');
+		  			console.log('Not found twitter');
 		  			var user = new User;
 
 					//user.email = profile.emails[0].value;

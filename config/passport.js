@@ -8,7 +8,6 @@ module.exports = function(app) {
 
 		passport.serializeUser(function(user, cb) {
 		  cb(null, user);
-		  console.log(user);
 		});
 
 
